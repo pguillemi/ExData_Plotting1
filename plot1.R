@@ -5,10 +5,8 @@ library(lubridate)
 #clear environment
 rm(list = ls())
 
-#create data and output folder
+#create data folder
 if(!dir.exists("data"))dir.create("data")
-if(!dir.exists("output"))dir.create("output")
-
 
 #download repository and unzip
 if(!file.exists("./data/household_power_consumption.zip")){
@@ -39,6 +37,7 @@ household_power <- household_power %>%
   mutate(
     Date_time = ymd_hms(str_c(as.character(Date), as.character(Time), sep = " "))
   )
+
 
 #plot
 png(filename = "plot1.png", width = 480, height = 480, bg = "transparent")

@@ -5,7 +5,7 @@ library(lubridate)
 #clear environment
 rm(list = ls())
 
-#create data and output folder
+#create data folder
 if(!dir.exists("data"))dir.create("data")
 
 
@@ -39,17 +39,27 @@ household_power <- household_power %>%
     Date_time = ymd_hms(str_c(as.character(Date), as.character(Time), sep = " "))
   )
 
+
 #set locale to English to get proper weekdays
 #(This is neccesary only as I'm working in a computer that is set in Spanish)
 curr_locale <- Sys.getlocale("LC_TIME")
 Sys.setlocale("LC_TIME", "English")
 
 #plot
-png(filename = "plot2.png", width = 480, height = 480, bg = "transparent")
+png(filename = "plot3.png", width = 480, height = 480, bg = "transparent")
 
-with(household_power, plot(Date_time,Global_active_power, type = "l", 
-                           ylab = "Global Active Power (kilowatts)", xlab = NA))
+with(household_power, plot(Date_time,Sub_metering_1, type = "n", 
+                           ylab = "Energy sub metering", xlab = NA))
+
+with(household_power, lines(Date_time,Sub_metering_1, col = "black"))
+with(household_power, lines(Date_time,Sub_metering_2, col = "red"))
+with(household_power, lines(Date_time,Sub_metering_3, col = "blue"))
+with(household_power, legend("topright",
+                             legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"),
+                             lty = 1,
+                             col = c("black","red","blue")))  
   
+
 dev.off()
 
 #return locale to default
